@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Task } from '../model/task';
+//import { Task } from '../model/task';
+import { ITask } from '../Interface/ITask';
 
 @Injectable({
   providedIn: 'root'
@@ -15,20 +16,19 @@ export class CrudServiceService {
     this.serviceUrl = "http://localhost:3000/tasks";
   }
 
-  addTask(task : Task) : Observable<Task> {
-    return this.http.post<Task>(this.serviceUrl, task);
+  addTask(task : ITask) : Observable<ITask> {
+    return this.http.post<ITask>(this.serviceUrl, task);
   }
 
-  getAllTask() : Observable<Task[]> {
-    return this.http.get<Task[]>(this.serviceUrl);
+  getAllTask() : Observable<ITask[]> {
+    return this.http.get<ITask[]>(this.serviceUrl);
   }
 
-  deleteTask(task : Task) : Observable<Task> {
-    return this.http.delete<Task>(this.serviceUrl+'/'+task.id);
+  deleteTask(task : ITask) : Observable<ITask> {
+    return this.http.delete<ITask>(this.serviceUrl+'/'+task.id);
   }
 
-  editTask(task : Task) : Observable<Task> {
-    return this.http.put<Task>(this.serviceUrl+'/'+task.id, task);
+  editTask(task : ITask) : Observable<ITask> {
+    return this.http.put<ITask>(this.serviceUrl+'/'+task.id, task);
   }
-
 }

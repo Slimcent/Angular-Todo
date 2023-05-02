@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Task } from 'src/app/model/task';
+//import { Task } from 'src/app/model/task';
+import { ITask } from 'src/app/Interface/ITask';
 import { CrudServiceService } from 'src/app/service/crud-service.service';
 
 @Component({
@@ -8,9 +9,9 @@ import { CrudServiceService } from 'src/app/service/crud-service.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-taskObj : Task = new Task();
-taskArray : Task[] = [];
-
+  taskObj!: ITask;
+  taskArray : ITask[] = [];
+  
 addTaskValue : string = '';
 editTaskValue : string = '';
 
@@ -19,18 +20,23 @@ editTaskValue : string = '';
   ngOnInit(): void {
     this.addTaskValue = '';
     this.editTaskValue = '';
-    this.taskObj = new Task();
     this.taskArray = [];
     this.getAllTask();
   }
-
+ 
   addTask(){
-    this.taskObj.task_name = this.addTaskValue;
-    this.crudService.addTask(this.taskObj).subscribe( res => {
+    if(this.addTaskValue == ''){
+      alert("Empty text")
+      return;
+    }
+
+    const newTask : ITask = {
+      task_name : this.addTaskValue
+    }
+
+    this.crudService.addTask(newTask).subscribe( res => {
       this.ngOnInit();
       this.addTaskValue = '';
-    }, err => {
-      alert(err);
     });
   }
 
@@ -55,7 +61,7 @@ editTaskValue : string = '';
     });
   }
 
-  deleteTask(task : Task){
+  deleteTask(task : ITask){
     this.crudService.deleteTask(task).subscribe( res => {
       this.ngOnInit();
     }, res => {
@@ -63,7 +69,7 @@ editTaskValue : string = '';
     });
   }
 
-  call(task : Task){
+  call(task : ITask){
     this.taskObj = task;
     this.editTaskValue = task.task_name;
   }
